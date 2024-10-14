@@ -6,6 +6,11 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Document(collection = "journal_entries")
 public class JournalEntry {
     @Id
@@ -17,36 +22,36 @@ public class JournalEntry {
 
     private LocalDate date;
 
-    public ObjectId getId() {
-        return id;
-    }
+    // public ObjectId getId() {
+    //     return id;
+    // }
 
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
+    // public void setId(ObjectId id) {
+    //     this.id = id;
+    // }
 
-    public String getTitle() {
-        return title;
-    }
+    // public String getTitle() {
+    //     return title;
+    // }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    // public void setTitle(String title) {
+    //     this.title = title;
+    // }
 
-    public String getContent() {
-        return content;
-    }
+    // public String getContent() {
+    //     return content;
+    // }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+    // public void setContent(String content) {
+    //     this.content = content;
+    // }
 
-    public LocalDate getDate() {
-        return date;
-    }
+    // public LocalDate getDate() {
+    //     return date;
+    // }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+    // public void setDate(LocalDate date) {
+    //     this.date = date;
+    // }
 
 }
