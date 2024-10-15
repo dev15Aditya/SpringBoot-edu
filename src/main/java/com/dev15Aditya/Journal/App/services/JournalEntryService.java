@@ -17,7 +17,7 @@ public class JournalEntryService {
     @Autowired
     private  JournalEntryRepository journalEntryRepository;
 
-    public boolean  saveEntry(JournalEntry journalEntry) {
+    public boolean saveEntry(JournalEntry journalEntry) {
         journalEntry.setDate(LocalDate.now());
         journalEntryRepository.save(journalEntry);
         return true;
