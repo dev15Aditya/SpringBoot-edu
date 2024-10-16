@@ -75,6 +75,7 @@ public class JournalEntryController {
             oldEntry.setContent((newEntry.getContent() != null && !newEntry.getContent().equals("")) ? newEntry.getContent() : oldEntry.getContent());
         }
         
+        journalEntryService.updateEntry(oldEntry);
         return new ResponseEntity<>(oldEntry, HttpStatus.OK);
     }
 }
