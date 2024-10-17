@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dev15Aditya.Journal.App.entity.JournalEntry;
+import com.dev15Aditya.Journal.App.entity.User;
 import com.dev15Aditya.Journal.App.services.JournalEntryService;
+import com.dev15Aditya.Journal.App.services.UserService;
 
 
 @RestController
@@ -27,14 +29,23 @@ public class JournalEntryController {
     @Autowired
     private JournalEntryService journalEntryService;
 
-    @GetMapping
-    public ResponseEntity<?> getAll() {
-        List<JournalEntry> journalEntries = journalEntryService.getAll();
-        return new ResponseEntity<>(journalEntries, HttpStatus.OK);
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("{userName}")
+    public ResponseEntity<?> getJournalEntryOfUser(@PathVariable String userName) {
+        User user = userService.findUserByUserName(userName);
+        List<JournalEntry> journalEntries = user.getJournalEntries();
+        if(journalEntries != null && !journalEntries.isEmpty()) {
+            return new ResponseEntity<>(journalEntries, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
-    public ResponseEntity<JournalEntry> createJournalEntry(@RequestBody JournalEntry myEntry) {
+    @PostMapping("{userName}")
+    public ResponseEntity<JournalEntry> createJournalEntry(@RequestBody JournalEntry myEntry, @PathVariable String userName) {
+        User user = userService.findUserByUserName(userName);
         try{
             journalEntryService.saveEntry(myEntry);
             return new ResponseEntity<>(myEntry, HttpStatus.CREATED);
