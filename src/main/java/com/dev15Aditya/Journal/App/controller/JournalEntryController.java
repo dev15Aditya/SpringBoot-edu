@@ -35,6 +35,7 @@ public class JournalEntryController {
     @GetMapping("{userName}")
     public ResponseEntity<?> getJournalEntryOfUser(@PathVariable String userName) {
         User user = userService.findUserByUserName(userName);
+        System.out.println("user: " + user);
         List<JournalEntry> journalEntries = user.getJournalEntries();
         if(journalEntries != null && !journalEntries.isEmpty()) {
             return new ResponseEntity<>(journalEntries, HttpStatus.OK);
@@ -44,10 +45,10 @@ public class JournalEntryController {
     }
 
     @PostMapping("{userName}")
-    public ResponseEntity<JournalEntry> createJournalEntry(@RequestBody JournalEntry myEntry, @PathVariable String userName) {
-        User user = userService.findUserByUserName(userName);
+    public ResponseEntity<?> createJournalEntry(@RequestBody JournalEntry myEntry, @PathVariable String userName) {
         try{
-            journalEntryService.saveEntry(myEntry);
+            // User user = userService.findUserByUserName(userName);
+            journalEntryService.saveEntry(myEntry, userName);
             return new ResponseEntity<>(myEntry, HttpStatus.CREATED);
         }
         catch(Exception e){
@@ -66,10 +67,10 @@ public class JournalEntryController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("id/{myId}")
-    public ResponseEntity<?> deleteJournalEntryById(@PathVariable ObjectId myId) {
+    @DeleteMapping("id/{username}/{myId}")
+    public ResponseEntity<?> deleteJournalEntryById(@PathVariable ObjectId myId, @PathVariable String username) {
         try{
-            journalEntryService.deleteById(myId);
+            journalEntryService.deleteById(myId, username);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch(Exception e){
@@ -77,8 +78,8 @@ public class JournalEntryController {
         }
     }
     
-    @PutMapping("id/{id}")
-    public ResponseEntity<JournalEntry> updateJournalEntry(@PathVariable ObjectId id, @RequestBody JournalEntry newEntry) {
+    @PutMapping("id/{username}/{id}")
+    public ResponseEntity<JournalEntry> updateJournalEntry(@PathVariable ObjectId id, @RequestBody JournalEntry newEntry, @PathVariable String username) {
         JournalEntry oldEntry = journalEntryService.getById(id).orElse(null);
 
         if(oldEntry != null) {
